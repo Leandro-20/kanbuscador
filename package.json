@@ -1,0 +1,29 @@
+{
+  "name": "@leandro.tevez/buscador",
+  "version": "1.0.0",
+  "description": "Kan search",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Leandro-20/kanbuscador"
+  },
+  "keywords": [
+    "kan",
+    "search",
+    "autocompleter",
+    "idemop"
+  ],
+  "author": "Leandro Tevez",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.24.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "private": false
+}
