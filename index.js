@@ -35,7 +35,7 @@ const buscador = async ({url, country, text, title}) => {
 }
   exports.buscador = buscador
   //buscar('url', 'atributo', 'texto').then(data => console.log(data))
-  buscador({url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',country:'Expediente', text:12, title:'hola'})
-  .then(({ title, result}) => {console.log({title, result})})
+  //buscador({url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',country:'Expediente', text:12, title:'hola'})
+  //.then(({ title, result}) => {console.log({title, result})})
 
 
