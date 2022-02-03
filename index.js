@@ -36,7 +36,7 @@ const buscador = async ({url, filterProperty, text, layerName, title}) => {
 }
   exports.buscador = buscador
   //buscar('url', 'atributo', 'texto').then(data => console.log(data))
-  buscador({url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: '1', title:'hola',layerName: 'geonode:obras_localizacion_puntos' })
-  .then(({ title, result}) => {console.log({title, result})})
+  //buscador({url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: '1', title:'hola',layerName: 'geonode:obras_localizacion_puntos' })
+  //.then(({ title, result}) => {console.log({title, result})})
 
 
