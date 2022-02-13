@@ -1,6 +1,6 @@
 {
   "name": "@leandro.tevez/buscador",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Kan search",
   "main": "index.js",
   "scripts": {

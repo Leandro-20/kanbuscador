@@ -35,8 +35,15 @@ const buscador = async ({url, filterProperty, text, layerName, title}) => {
     return {title, result:result.data.features}
 }
   exports.buscador = buscador
-  //buscar('url', 'atributo', 'texto').then(data => console.log(data))
-  //buscador({url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: '1', title:'hola',layerName: 'geonode:obras_localizacion_puntos' })
-  //.then(({ title, result}) => {console.log({title, result})})
 
+const multiBuscador = async (data) => {
+    const resultados = await Promise.all(data.map((elemento) => buscador(elemento)))
+    return resultados
+}
+exports.multiBuscador = multiBuscador
 
+// multiBuscador([{url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: '1', title:'hola',layerName: 'geonode:obras_localizacion_puntos' },
+// {url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: 'c', title:'hola',layerName: 'geonode:obras_localizacion_puntos' }])
+
+// buscador({url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: '1', title:'hola',layerName: 'geonode:obras_localizacion_puntos0' })
+// .then(({ title, result}) => {console.log({title, result})})
