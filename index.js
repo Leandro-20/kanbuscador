@@ -35,7 +35,7 @@ const getGeonodeResult = ({url, filterProperty, text, layerName}) => {
 }
 const getNominatimResult = ({text}) => {
     return axios({
-    url:`https://nominatim.openstreetmap.org/search?q=${text}&countrycodes=ar&format=geojson`
+    url:`https://nominatim.openstreetmap.org/search?q=${text}&countrycodes=ar&state=${text}&format=geojson`
 })
 }
 
@@ -61,5 +61,5 @@ exports.multiBuscador = multiBuscador
 // multiBuscador([{url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: '1', title:'hola',layerName: 'geonode:obras_localizacion_puntos' },
 // {url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: 'c', title:'hola',layerName: 'geonode:obras_localizacion_puntos' }])
 
-//  buscador({url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: 'obelisco', title:'hola',layerName: 'geonode:obras_localizacion_puntos0' })
-//  .then(({ title, result}) => {console.log({title,result})})
+// buscador({text: 'la pampa',type:'nominatim' })
+// .then(({ title, result}) => {console.log({title,result})})
