@@ -54,7 +54,7 @@ const buscador = async ({url, filterProperty, text, layerName, title, type= 'geo
         case 'geonode':
             result = await getGeonodeResultDebounced({url, filterProperty, text, layerName, httpsPermission})
       }
-    return {title, result:result?.data?.features}
+    return {title, result:result.data.features}
 }
   exports.buscador = buscador
 
