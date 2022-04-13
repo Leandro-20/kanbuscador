@@ -1,6 +1,8 @@
 const axios = require('axios').default
+const https = require('https')
+const debounce = require('debounce-promise')
 
-const getGeonodeResult = ({url, filterProperty, text, layerName}) => {
+const getGeonodeResult = ({url, filterProperty, text, layerName, httpsPermission}) => {
     return axios({
         url: `${url}`,
         data: `
@@ -30,7 +32,8 @@ const getGeonodeResult = ({url, filterProperty, text, layerName}) => {
         headers: {
             'Content-Type': 'application/xml'
         },
-        method: 'POST'
+        method: 'POST',
+        httpsAgent: new https.Agent({ rejectUnauthorized: httpsPermission })
     })
 }
 const getNominatimResult = ({text}) => {
@@ -39,16 +42,19 @@ const getNominatimResult = ({text}) => {
 })
 }
 
-const buscador = async ({url, filterProperty, text, layerName, title, type= 'geonode'}) => {
+const getNominatimResultDebounced = debounce(getNominatimResult, 300)
+const getGeonodeResultDebounced = debounce(getGeonodeResult, 300)
+
+const buscador = async ({url, filterProperty, text, layerName, title, type= 'geonode', httpsPermission= true}) => {
     let result 
     switch (type) {
         case 'nominatim':
-          result = await getNominatimResult({text})
+            result = await getNominatimResultDebounced({text})
           break;
         case 'geonode':
-            result = await getGeonodeResult({url, filterProperty, text, layerName})
+            result = await getGeonodeResultDebounced({url, filterProperty, text, layerName, httpsPermission})
       }
-    return {title, result:result.data.features}
+    return {title, result:result?.data?.features}
 }
   exports.buscador = buscador
 
@@ -58,8 +64,18 @@ const multiBuscador = async (data) => {
 }
 exports.multiBuscador = multiBuscador
 
-// multiBuscador([{url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: '1', title:'hola',layerName: 'geonode:obras_localizacion_puntos' },
-// {url:'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json',filterProperty:'id_obra', text: 'c', title:'hola',layerName: 'geonode:obras_localizacion_puntos' }])
+// let text = '12'
+// multiBuscador([{
+//     url: 'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json', filterProperty: 'id_obra', text, title: 'obras', layerName: 'geonode:obras_localizacion_puntos0'
+//   }, {
+//     url: 'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json', filterProperty: 'nombre_obr', text, title: 'obras', layerName: 'geonode:obras_localizacion_puntos0'
+//   }, {
+//     url: 'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json', filterProperty: 'id_proyect', text, title: 'obras', layerName: 'geonode:obras_localizacion_puntos0'
+//   }, {
+//     text, type: 'nominatim', title: 'lugar'
+//   }]).then((data)=> data.map(({title, result})=> console.log({title, result})))
 
 // buscador({text: 'la pampa',type:'nominatim' })
-// .then(({ title, result}) => {console.log({title,result})})
+// .then(({ title, result }) => {console.log({title,result})})
+
+
