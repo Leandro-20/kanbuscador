@@ -1,6 +1,5 @@
 const axios = require('axios').default
 const https = require('https')
-const debounce = require('debounce-promise')
 
 const getGeonodeResult = ({url, filterProperty, text, layerName, httpsPermission}) => {
     return axios({
@@ -42,17 +41,14 @@ const getNominatimResult = ({text}) => {
 })
 }
 
-const getNominatimResultDebounced = debounce(getNominatimResult, 300)
-const getGeonodeResultDebounced = debounce(getGeonodeResult, 300)
-
-const buscador = async ({url, filterProperty, text, layerName, title, type= 'geonode', httpsPermission= true}) => {
-    let result 
+const buscador = async ({url, filterProperty, text, layerName, title, type= 'geonode', httpsPermission= false}) => {
+    let result
     switch (type) {
         case 'nominatim':
-            result = await getNominatimResultDebounced({text})
+            result = await getNominatimResult({text})
           break;
         case 'geonode':
-            result = await getGeonodeResultDebounced({url, filterProperty, text, layerName, httpsPermission})
+            result = await getGeonodeResult({url, filterProperty, text, layerName, httpsPermission})
       }
     return {title, result:result.data.features}
 }
@@ -64,13 +60,13 @@ const multiBuscador = async (data) => {
 }
 exports.multiBuscador = multiBuscador
 
-// let text = '12'
+// let text = 'mitre'
 // multiBuscador([{
-//     url: 'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json', filterProperty: 'id_obra', text, title: 'obras', layerName: 'geonode:obras_localizacion_puntos0'
+//     url: 'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json', filterProperty: 'id_obra', text, title: 'obras', layerName: 'geonode:Obras_y_proyectos_puntuales_visorgeomop'
 //   }, {
-//     url: 'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json', filterProperty: 'nombre_obr', text, title: 'obras', layerName: 'geonode:obras_localizacion_puntos0'
+//     url: 'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json', filterProperty: 'nombre_obr', text, title: 'obras', layerName: 'geonode:Obras_y_proyectos_puntuales_visorgeomop'
 //   }, {
-//     url: 'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json', filterProperty: 'id_proyect', text, title: 'obras', layerName: 'geonode:obras_localizacion_puntos0'
+//     url: 'https://visor.obraspublicas.gob.ar/gs/ows?service=WFS&outputFormat=json', filterProperty: 'id_proyect', text, title: 'obras', layerName: 'geonode:Obras_y_proyectos_puntuales_visorgeomop'
 //   }, {
 //     text, type: 'nominatim', title: 'lugar'
 //   }]).then((data)=> data.map(({title, result})=> console.log({title, result})))
