@@ -35,17 +35,17 @@ const getGeonodeResult = ({url, filterProperty, text, layerName, httpsPermission
         httpsAgent: new https.Agent({ rejectUnauthorized: httpsPermission })
     })
 }
-const getNominatimResult = ({text, state, viewbox}) => {
+const getNominatimResult = ({text, county}) => {
     return axios({
-    url:`https://nominatim.openstreetmap.org/search.php?street=${text}&county=Argentina&state=${state}&country=Argentina&viewbox=${viewbox}&format=geojson`
+    url:`https://nominatim.openstreetmap.org/search.php?street=${text}&county=${county}&bounded=1&format=geojson`
 })
 }
 
-const buscador = async ({url, filterProperty, text, layerName, title, type= 'geonode', httpsPermission= false, state, viewbox }) => {
+const buscador = async ({url, filterProperty, text, layerName, title, type= 'geonode', httpsPermission= false, county }) => {
     let result
     switch (type) {
         case 'nominatim':
-            result = await getNominatimResult({text, state, viewbox})
+            result = await getNominatimResult({text, county})
           break;
         case 'geonode':
             result = await getGeonodeResult({url, filterProperty, text, layerName, httpsPermission})
@@ -71,7 +71,7 @@ exports.multiBuscador = multiBuscador
 //     text, type: 'nominatim', title: 'lugar'
 //   }]).then((data)=> data.map(({title, result})=> console.log({title, result})))
 
-// buscador({text: 'malvinas',state: 'Mendoza', viewbox: '-70.41709%2C-32.61511%2C-66.54255%2C-33.52366', type:'nominatim' })
+// buscador({text: 'balcarce 151', county: 'Lujan de Cuyo', type:'nominatim' })
 // .then(({ title, result }) => {console.log({title,result})})
 
 
